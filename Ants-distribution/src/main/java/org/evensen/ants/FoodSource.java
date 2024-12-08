@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class FoodSource {
 
-    final int foodCount = 2000;
+    final int foodCount = 1000;
 
     private int width;
     private int height;
@@ -46,7 +46,7 @@ public class FoodSource {
     public void resetFoodSource(){
         Random rand = new Random();
         this.foodLeft = this.foodCount;
-        this.p = new Position(rand.nextFloat(50, this.width - 50), rand.nextFloat(50, this.height - 50));
+        this.p = new Position(rand.nextFloat(this.radius, this.width - this.radius), rand.nextFloat(this.radius, this.height - this.radius));
     }
 
 

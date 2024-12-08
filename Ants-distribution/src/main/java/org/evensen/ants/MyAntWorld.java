@@ -42,8 +42,10 @@ public class MyAntWorld implements AntWorld {
         int radius = foodSource.radius;
         for (int x = (int)center.getX() - radius; x < center.getX() + radius; x++) {
             for (int y = (int)center.getY() - radius; y < center.getY() + radius; y++) {
-                if (center.isWithinRadius(new Position(x, y), radius)) {
-                    this.foodMatrix[x][y] = true;
+                if (isInsideWorld(foodSource.p) && center.isWithinRadius(new Position(x, y), radius)) {
+                    if(x*y >= 0){
+                        this.foodMatrix[x][y] = true;
+                    }
                 }
             }
         }
@@ -54,13 +56,18 @@ public class MyAntWorld implements AntWorld {
         int radius = foodSource.radius;
         for (int x = (int)center.getX() - radius; x < center.getX() + radius; x++) {
             for (int y = (int)center.getY() - radius; y < center.getY() + radius; y++) {
-                if (center.isWithinRadius(new Position(x, y), radius)) {
-                    this.foodMatrix[x][y] = false;
+                if (isInsideWorld(foodSource.p) && center.isWithinRadius(new Position(x, y), radius)) {
+                    if(x*y >= 0){
+                        this.foodMatrix[x][y] = false;
+                    }
                 }
             }
         }
     }
 
+    private boolean isInsideWorld(Position p) {
+        return p.getX() >= 0 && p.getX() < this.width && p.getY() >= 0 && p.getY() < this.height;
+    }
 
 
     @Override
