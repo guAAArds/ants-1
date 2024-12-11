@@ -10,8 +10,8 @@ import java.util.Random;
 
 public class MyAntWorld implements AntWorld {
 
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
     private float[][] foragingPheromones;
     private float[][] foodPheromones;
@@ -28,7 +28,6 @@ public class MyAntWorld implements AntWorld {
         this.foodSources = new ArrayList<>();
         for(int i = 0; i < food; i++){
             this.foodSources.add(new FoodSource(width, height));
-            //addFoodSource(this.foodSources.get(i));
         }
 
         this.foodMatrix = new boolean[width][height];
@@ -85,17 +84,20 @@ public class MyAntWorld implements AntWorld {
         final float x = p.getX();
         final float y = p.getY();
 
-        return x < 0 || y < 0 || y >= this.height || x >= this.width;
+        final boolean heightCheck = (float) 0 > y || y >= (float) this.height;
+        final boolean widthCheck  = (float) 0 > x || x >= (float) this.width;
+
+        return heightCheck ||widthCheck;
     }
 
     @Override
     public void dropForagingPheromone(final Position p, final float amount) {
-        this.foragingPheromones[(int)p.getX()][(int)p.getY()] += 1.0;
+        this.foragingPheromones[(int)p.getX()][(int)p.getY()] += 0.5F;
     }
 
     @Override
     public void dropFoodPheromone(final Position p, final float amount) {
-        this.foodPheromones[(int)p.getX()][(int)p.getY()] += 1.0;
+        this.foodPheromones[(int)p.getX()][(int)p.getY()] += 0.5F;
     }
 
     @Override
@@ -118,17 +120,6 @@ public class MyAntWorld implements AntWorld {
 
             }
         }
-
-        /*
-            this.foodLeft = this.foodCount;
-            this.p = new Position(rand.nextFloat(0, this.width), rand.nextFloat(0, this.height));
-
-        for(FoodSource fs : this.foodSources){
-            if(p.isWithinRadius(fs.p, fs.radius)){
-                fs.takeFood();
-            }
-        }
-         */
     }
 
     @Override
@@ -169,10 +160,7 @@ public class MyAntWorld implements AntWorld {
 
     @Override
     public boolean isHome(final Position p) {
-        Position home = new Position(this.width, this.height/2);
-
-
-        return p.isWithinRadius(home, 20);
+        return p.isWithinRadius(new Position(this.width, this.height / 2), 20);
     }
 
     @Override
